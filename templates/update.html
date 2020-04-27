@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Cube Timer</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1 style="text-align: center;">Cube Timer</h1>
+
+    <div class="form">
+        <form action="/update/{{time.id}}" method="POST">
+            <input type="text" name="value" id="value" value={{time.value}}>
+            <select id="puzzle" name="puzzle" value={{time.puzzle}}>
+                <option value="{{time.puzzle}}" selected hidden> 
+                    {{time.puzzle}}
+                </option> 
+
+                <option value="3x3">3x3</option>
+                <option value="4x4">4x4</option>
+                <option value="5x5">5x5</option>
+                <option value="6x6">6x6</option>
+            </select>
+            <input type="submit" value="Update Time">
+        </form>
+    </div>
+</div>
+{% endblock %}

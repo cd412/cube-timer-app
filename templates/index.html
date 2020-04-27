@@ -1,9 +1,50 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Task Master</title>
+<title>Cube Timer</title>
 {% endblock %}
 
 {% block body %}
-<p>Hello World! I like cheese</p>
+<div class="content">
+    <h1 style="text-align: center;">Cube Timer</h1>
+
+    {% if times|length < 1 %}
+        <h4>There are no times to display.</h4>
+    {% else %}
+
+        <table>
+            <tr>
+                <th>Time</th>
+                <th>Puzzle</th>
+                <th>Actions</th>
+            </tr>
+            {% for time in times %}
+                <tr>
+                    <td>{{ time.value }}</td>
+                    <td>{{ time.puzzle }}</td>
+                    <td>
+                        <a href="/delete/{{time.id}}">Delete</a>
+                        <br>
+                        <a href="/update/{{time.id}}">Update</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    <div class="form">
+
+
+
+        <form action="/" method="POST">
+            <input type="text" name="value" id="value">
+            <select id="puzzle" name="puzzle">
+                <option value="3x3">3x3</option>
+                <option value="4x4">4x4</option>
+                <option value="5x5">5x5</option>
+                <option value="6x6">6x6</option>
+            </select>
+            <input type="submit" value="Add Time">
+        </form>
+    </div>
+</div>
 {% endblock %}
