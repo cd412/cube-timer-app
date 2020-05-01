@@ -18,7 +18,7 @@
         </div>
         <div class="col-3">
             <div class="form">
-                <form action="/" method="POST">
+                <form action="/" method="POST" id="form">
                     <input type="number" name="value" id="value" size="5" placeholder="0.00" required name="price" min="0" max="999.99" step="0.01" pattern="^\d+(?:\.\d{1,2})?$">
                     <select id="puzzle" name="puzzle">
                         <option value="3x3">3x3</option>
@@ -61,6 +61,7 @@
     var time = 0;
     var timerLabel = document.getElementById('timerLabel');
     var value = document.getElementById('value');
+    var form = document.getElementById('form')
 
     function start(){
         time=0;
@@ -70,25 +71,24 @@
 
     function stop(){
         status = 0;
-        console.log(value.value)
-        console.log(timerLabel)
-        //value.value = timerLabel.innerHTML;
+        console.log([timerLabel.innerHTML, value.value, time]);
+        form.submit();
     }
 
     function timer(){
         if (status == 1) {
             setTimeout(function() {
                 time++;
-
-                //var min = Math.floor(time/100/60);
+                
                 var sec = Math.floor(time/100);
                 var mSec = time % 100;
 
                 if (mSec < 10) mSec = "0" + mSec;
 
                 timerLabel.innerHTML = sec + "." + mSec;
-                value.value = sec + "." + mSec;
-
+                //value.value = sec + "." + mSec;
+                value.value = time/100
+                
                 timer();
             }, 10);
         }

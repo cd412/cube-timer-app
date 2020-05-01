@@ -1,3 +1,6 @@
 .timerLabel {
+    text-align: center;
+    font-size: 1000%;
     font-weight: bold;
+    font-family: Courier New;
 }
