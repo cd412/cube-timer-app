@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Cube Timer - Sign up</title>
+{% endblock %}
+
+{% block body %}
+<h4>Sign Up!</h4>
+<div>
+    <form class="form" action="/signup" method="POST">
+        <input class="form-control" name="username" type="text" placeholder="Username">
+        <br>
+        <input class="form-control" name="email" type="email" placeholder="Email">
+        <br>
+        <input class="form-control" name="password" type="password" placeholder="Password">
+        <br>
+        <input class="form-control" type="password" placeholder="Confirm Password">
+        <br>
+        <button type="submit">Sign Up</button>
+    </form>
+</div>
+{% endblock %}

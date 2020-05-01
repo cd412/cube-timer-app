@@ -1,10 +1,13 @@
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from helper_functions import salt_password
+from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
 
 # Data model
 class Time(db.Model):
@@ -17,7 +20,15 @@ class Time(db.Model):
     def __repr__(self):
         return "TIME {}".format(self.id)
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), nullable=False, unique=True)
+    email = db.Column(db.String(120), nullable=False, unique=True)
+    password = db.Column(db.String(120), nullable=False)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
+    def __repr__(self):
+        return "USER {}".format(self.username)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -64,7 +75,51 @@ def update(id):
     else:
         return render_template('update.html', time=time)
 
-    
+@app.route('/signup', methods=['GET', 'POST'])  
+def signup():
+    if request.method == 'POST':
+        _username = request.form['username']
+        _email = request.form['email']
+        _password = request.form['password']
+
+        salted_pass = salt_password(_password)
+        hashed_pass = bcrypt.generate_password_hash(salted_pass)
+
+        try:
+            new_user = User(username=_username,
+                            email=_email,
+                            password=hashed_pass)
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect('/')
+        except:
+            return "There was an error creating your account."
+
+
+    else:   
+        return render_template('auth/reg.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        _email = request.form['email']
+        _password = request.form['password']
+
+        salted_pass = salt_password(_password)
+        #hashed_pass = bcrypt.generate_password_hash(salted_pass)
+
+        user = User.query.filter(User.email == _email).first()
+        if user is None:
+            return "That email address was not found."
+        else:
+            if not bcrypt.check_password_hash(user.password, salted_pass):
+                return "The password is incorrect"
+            else:
+                return "The password is correct"
+
+        return redirect('/')
+    else:
+        return render_template('auth/login.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set "VIRTUAL_ENV=C:\Users\student\Documents\repos\_Projects\FreelanceCRM\.venv"
+set "VIRTUAL_ENV=C:\Users\student\Documents\repos\_Projects\CubeTimerApp\.venv"
 
 if not defined PROMPT (
     set "PROMPT=$P$G"
