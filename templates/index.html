@@ -14,13 +14,12 @@
 <div class="container">
     <div class="row">
         <div class="col-9 border border-primary">
-            <h3>Start Timer</h3>
+            <p class="timerLabel" id="timerLabel">0.00</p>
         </div>
         <div class="col-3">
             <div class="form">
                 <form action="/" method="POST">
                     <input type="number" name="value" id="value" size="5" placeholder="0.00" required name="price" min="0" max="999.99" step="0.01" pattern="^\d+(?:\.\d{1,2})?$">
-                    <!--input type="number" name="value" id="value" placeholder="0.00" step=any size=5 pattern="^\d+(?:\.\d{1,2})?$"-->
                     <select id="puzzle" name="puzzle">
                         <option value="3x3">3x3</option>
                         <option value="4x4">4x4</option>
@@ -56,4 +55,55 @@
     </div>
 
 </div>
+
+<script>
+        var status = 0; // 0:stop 1:running
+    var time = 0;
+    var timerLabel = document.getElementById('timerLabel');
+    var value = document.getElementById('value');
+
+    function start(){
+        time=0;
+        status = 1;
+        timer();
+    }
+
+    function stop(){
+        status = 0;
+        console.log(value.value)
+        console.log(timerLabel)
+        //value.value = timerLabel.innerHTML;
+    }
+
+    function timer(){
+        if (status == 1) {
+            setTimeout(function() {
+                time++;
+
+                //var min = Math.floor(time/100/60);
+                var sec = Math.floor(time/100);
+                var mSec = time % 100;
+
+                if (mSec < 10) mSec = "0" + mSec;
+
+                timerLabel.innerHTML = sec + "." + mSec;
+                value.value = sec + "." + mSec;
+
+                timer();
+            }, 10);
+        }
+    }
+
+    document.onkeydown = function(event) { 
+        if (event) {
+            if (event.keyCode == 32 || event.which == 32) {
+                if(status == 1) {
+                    stop();
+                } else if (status == 0) {
+                    start();
+                }
+            }
+        }
+    };
+</script>
 {% endblock %}
