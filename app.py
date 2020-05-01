@@ -46,7 +46,7 @@ def index():
             return "There was an issue manually adding the time."
     else:
         # Show page
-        times = Time.query.order_by(Time.date_entered).all()
+        times = Time.query.order_by(Time.date_entered.desc()).all()
         return render_template('index.html', times=times)
 
 @app.route('/delete/<int:id>')

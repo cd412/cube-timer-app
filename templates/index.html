@@ -5,51 +5,55 @@
 {% endblock %}
 
 {% block body %}
-<div class="header">
+<header>
     <a href='/login'>Log in</a>
     <a href='/signup'>Sign up</a>
-</div>
+</header>
 
-<div class="content">
-    <h1 style="text-align: center;">Cube Timer</h1>
+<h1 style="text-align: center;">Cube Timer</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-9 border border-primary">
+            <h3>Start Timer</h3>
+        </div>
+        <div class="col-3">
+            <div class="form">
+                <form action="/" method="POST">
+                    <input type="number" name="value" id="value" size="5" placeholder="0.00" required name="price" min="0" max="999.99" step="0.01" pattern="^\d+(?:\.\d{1,2})?$">
+                    <!--input type="number" name="value" id="value" placeholder="0.00" step=any size=5 pattern="^\d+(?:\.\d{1,2})?$"-->
+                    <select id="puzzle" name="puzzle">
+                        <option value="3x3">3x3</option>
+                        <option value="4x4">4x4</option>
+                        <option value="5x5">5x5</option>
+                        <option value="6x6">6x6</option>
+                    </select>
+                    <input type="submit" value="Add Time">
+                </form>
+            </div>
+            {% if times|length < 1 %}
+                <h6>There are no times to display.</h6>
+            {% else %}
 
-    {% if times|length < 1 %}
-        <h4>There are no times to display.</h4>
-    {% else %}
-
-        <table>
-            <tr>
-                <th>Time</th>
-                <th>Puzzle</th>
-                <th>Actions</th>
-            </tr>
-            {% for time in times %}
-                <tr>
-                    <td>{{ time.value }}</td>
-                    <td>{{ time.puzzle }}</td>
-                    <td>
-                        <a href="/delete/{{time.id}}">Delete</a>
-                        <br>
-                        <a href="/update/{{time.id}}">Update</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% endif %}
-    <div class="form">
-
-
-
-        <form action="/" method="POST">
-            <input type="text" name="value" id="value">
-            <select id="puzzle" name="puzzle">
-                <option value="3x3">3x3</option>
-                <option value="4x4">4x4</option>
-                <option value="5x5">5x5</option>
-                <option value="6x6">6x6</option>
-            </select>
-            <input type="submit" value="Add Time">
-        </form>
+                <table>
+                    <tr>
+                        <th>Time</th>
+                        <th>Puzzle</th>
+                        <th>Actions</th>
+                    </tr>
+                    {% for time in times %}
+                        <tr>
+                            <td>{{ time.value }}</td>
+                            <td>{{ time.puzzle }}</td>
+                            <td>
+                                <a href="/delete/{{time.id}}">Delete</a>
+                                <a href="/update/{{time.id}}">Update</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        </div>
     </div>
+
 </div>
 {% endblock %}
